@@ -3,7 +3,7 @@
 #include <Python.h>
 #include <bytesobject.h>
 
-#include "py_stdout.h"
+#include "py_stream.h"
 
 using namespace Rcpp;
 
@@ -18,14 +18,11 @@ PyObject *g_stderr = 0;
 
 
 // [[Rcpp::export(name = .python.init)]]
-void py_init(std::string name = "", std::string code = "") {
+void py_init(std::string name = "") {
   Py_SetProgramName(const_cast<char*>(name.c_str()));
   PyImport_AppendInittab("pyr", pyr::PyInit_PyR);
   Py_Initialize();
   PyImport_ImportModule("pyr");
-  if(!code.empty()) {
-    PyRun_SimpleString(code.c_str());
-  }
   // syncronized stdout/stderr
   // see http://gallery.rcpp.org/articles/using-rcout/
   g_stdout = pyr::set_stdstream(std::string("stdout"), pyr::PyStream_FromStream(&Rcpp::Rcout));
@@ -34,9 +31,11 @@ void py_init(std::string name = "", std::string code = "") {
 
 // [[Rcpp::export(name = .python.close)]]
 void py_close() {
+  // Not sure if it works and we're really don't need it since we're closing
+  // the session anyways.
+  //pyr::set_stdstream(std::string("stdout"), g_stdout);
+  //pyr::set_stdstream(std::string("stderr"), g_stderr);
   Py_Finalize();
-  pyr::set_stdstream(std::string("stdout"), g_stdout);
-  pyr::set_stdstream(std::string("stderr"), g_stderr);
 }
 
 RcppExport SEXP py_to_R(PyObject *obj) {
@@ -111,6 +110,12 @@ RcppExport SEXP py_get_type(std::string var_name) {
 }
 */
 
+//' Get value of Python variable.
+//'
+//' @param var_name Variable name string.
+//' @return Value of the variable.
+//' @examples
+//' python.get('a')
 // [[Rcpp::export(name = python.get)]]
 RcppExport SEXP py_get(std::string var_name) {
   PyObject *module     = PyImport_AddModule("__main__");

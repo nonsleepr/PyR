@@ -1,15 +1,21 @@
 Package: PyR
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1
+Title: Set of Functions to Allow Use of Python in R
+Version: 0.2.0
 Date: 2015-07-01
-Author: Alexander Bessonov <nonsleepr@gmail.com>
-Maintainer: Alexander Bessonov <nonsleepr@gmail.com>
-Description: Inspired by http://cran.r-project.org/package=rPython and http://gallery.rcpp.org/articles/rcpp-python/
-License: What license is it under?
+Authors@R: person("Alexander", "Bessonov", email = "nonsleepr@gmail.com",
+    role = c("aut", "cre"))
+Description: A bridge between R and Python. Thes package is inspired by rPython
+    package but adds some additional functionality like dealing with Python
+    exceptions and converting native Python data types to native R data types.
+    The pacakge was also inspired by http://gallery.rcpp.org/articles/rcpp-python/ .
+URL: https://github.com/nonsleepr/PyR
+BugReports: https://github.com/nonsleepr/PyR/issues
+License: MIT + file LICENSE
 LazyData: TRUE
 Imports:
     Rcpp (>= 0.11.6),
     jsonlite (>= 0.9.16)
+SystemRequirements: Python
 LinkingTo:
     Rcpp

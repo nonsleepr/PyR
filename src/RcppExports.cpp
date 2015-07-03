@@ -6,13 +6,12 @@
 using namespace Rcpp;
 
 // py_init
-void py_init(std::string name, std::string code);
-RcppExport SEXP PyR_py_init(SEXP nameSEXP, SEXP codeSEXP) {
+void py_init(std::string name);
+RcppExport SEXP PyR_py_init(SEXP nameSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< std::string >::type name(nameSEXP);
-    Rcpp::traits::input_parameter< std::string >::type code(codeSEXP);
-    py_init(name, code);
+    py_init(name);
     return R_NilValue;
 END_RCPP
 }

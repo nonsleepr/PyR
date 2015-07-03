@@ -85,7 +85,7 @@ PyMODINIT_FUNC PyInit_PyR(void) {
   //PyObject *mod = PyModule_New("pyr");
   PyObject *mod = Py_InitModule("pyr", NULL);
   if (mod) {
-    Py_INCREF(&PyStreamType);
+    Py_XINCREF(&PyStreamType);
     //PyModule_AddObject(mod, "PyStream", (PyObject *)&PyStreamType);
   }
 }
