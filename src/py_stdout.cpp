@@ -5,14 +5,14 @@
 // from https://github.com/mloskot/workshop/blob/master/python/emb/emb.cpp
 namespace pyr {
 
-struct Stdout {
+struct PyStream {
   PyObject_HEAD
   std::ostream *stream;
 };
 
-PyObject* Stdout_write(PyObject* self, PyObject* args) {
+PyObject* PyStream_write(PyObject* self, PyObject* args) {
   std::size_t written(0);
-  Stdout* selfimpl = reinterpret_cast<Stdout*>(self);
+  PyStream* selfimpl = reinterpret_cast<PyStream*>(self);
   if (selfimpl->stream) {
     char* data;
     if (!PyArg_ParseTuple(args, "s", &data))
@@ -25,21 +25,21 @@ PyObject* Stdout_write(PyObject* self, PyObject* args) {
   return PyLong_FromSize_t(written);
 }
 
-PyObject* Stdout_flush(PyObject* self, PyObject* args) {
+PyObject* PyStream_flush(PyObject* self, PyObject* args) {
   // no-op
   return Py_BuildValue("");
 }
 
-PyMethodDef Stdout_methods[] = {
-  {"write", Stdout_write, METH_VARARGS, "sys.stdout.write"},
-  {"flush", Stdout_flush, METH_VARARGS, "sys.stdout.flush"},
+PyMethodDef PyStream_methods[] = {
+  {"write", PyStream_write, METH_VARARGS, "sys.PyStream.write"},
+  {"flush", PyStream_flush, METH_VARARGS, "sys.PyStream.flush"},
   {0, 0, 0, 0} // sentinel
 };
 
-PyTypeObject StdoutType = {
+PyTypeObject PyStreamType = {
   PyVarObject_HEAD_INIT(0, 0)
-  "PyR.StdoutType",     /* tp_name */
-  sizeof(Stdout),       /* tp_basicsize */
+  "PyR.PyStreamType",     /* tp_name */
+  sizeof(PyStream),       /* tp_basicsize */
   0,                    /* tp_itemsize */
   0,                    /* tp_dealloc */
   0,                    /* tp_print */
@@ -57,14 +57,14 @@ PyTypeObject StdoutType = {
   0,                    /* tp_setattro */
   0,                    /* tp_as_buffer */
   Py_TPFLAGS_DEFAULT,   /* tp_flags */
-  "PyR.Stdout objects", /* tp_doc */
+  "PyR.PyStream objects", /* tp_doc */
   0,                    /* tp_traverse */
   0,                    /* tp_clear */
   0,                    /* tp_richcompare */
   0,                    /* tp_weaklistoffset */
   0,                    /* tp_iter */
   0,                    /* tp_iternext */
-  Stdout_methods,       /* tp_methods */
+  PyStream_methods,       /* tp_methods */
   0,                    /* tp_members */
   0,                    /* tp_getset */
   0,                    /* tp_base */
@@ -78,21 +78,21 @@ PyTypeObject StdoutType = {
 };
 
 PyMODINIT_FUNC PyInit_PyR(void) {
-  if (PyType_Ready(&StdoutType) < 0) {
+  if (PyType_Ready(&PyStreamType) < 0) {
     return;
   }
 
   //PyObject *mod = PyModule_New("pyr");
   PyObject *mod = Py_InitModule("pyr", NULL);
   if (mod) {
-    Py_INCREF(&StdoutType);
-    //PyModule_AddObject(mod, "stdout", (PyObject *)&StdoutType);
+    Py_INCREF(&PyStreamType);
+    //PyModule_AddObject(mod, "PyStream", (PyObject *)&PyStreamType);
   }
 }
 
 PyObject *PyStream_FromStream(std::ostream *stream) {
-  PyObject *pystream = StdoutType.tp_new(&StdoutType, 0, 0);
-  Stdout* impl = reinterpret_cast<Stdout*>(pystream);
+  PyObject *pystream = PyStreamType.tp_new(&PyStreamType, 0, 0);
+  PyStream* impl = reinterpret_cast<PyStream*>(pystream);
   impl->stream = stream;
   return pystream;
 }

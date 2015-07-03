@@ -13,26 +13,26 @@ using namespace Rcpp;
 #define _PyString_AsString(obj) PyUnicode_AsUTF8((obj))
 #endif
 
-
 PyObject *g_stdout = 0;
 PyObject *g_stderr = 0;
 
 
-// [[Rcpp::export]]
+// [[Rcpp::export(name = .python.init)]]
 void py_init(std::string name = "", std::string code = "") {
   Py_SetProgramName(const_cast<char*>(name.c_str()));
   PyImport_AppendInittab("pyr", pyr::PyInit_PyR);
   Py_Initialize();
+  PyImport_ImportModule("pyr");
   if(!code.empty()) {
     PyRun_SimpleString(code.c_str());
   }
-  PyImport_ImportModule("pyr");
-
+  // syncronized stdout/stderr
+  // see http://gallery.rcpp.org/articles/using-rcout/
   g_stdout = pyr::set_stdstream(std::string("stdout"), pyr::PyStream_FromStream(&Rcpp::Rcout));
   g_stderr = pyr::set_stdstream(std::string("stderr"), pyr::PyStream_FromStream(&Rcpp::Rcerr));
 }
 
-// [[Rcpp::export]]
+// [[Rcpp::export(name = .python.close)]]
 void py_close() {
   Py_Finalize();
   pyr::set_stdstream(std::string("stdout"), g_stdout);
@@ -50,6 +50,8 @@ RcppExport SEXP py_to_R(PyObject *obj) {
     return wrap(PyLong_AsLong(obj));
   } else if (PyFloat_CheckExact(obj)) {
     return wrap(PyFloat_AsDouble(obj));
+  } else if (PyBool_Check(obj)) {
+    return wrap(obj == Py_True);
   } else if (PyString_Check(obj)) {
   } else {
     obj = PyObject_Str(obj);
@@ -62,10 +64,8 @@ RcppExport SEXP py_to_R(PyObject *obj) {
 //' @param py_code std::string containing Python code.
 //' @param start Execution mode.
 //'   c("eval","file","single")
-// [[Rcpp::export]]
-RcppExport SEXP py_exec_code(std::string py_code, std::string start = "single") {
-  //Rcout << "Python: " << py_code << std::endl;
-
+// [[Rcpp::export(name = .python.exec)]]
+RcppExport SEXP py_exec(std::string py_code, std::string start = "single") {
   int start_token = 0;
 
   if (start == "eval") {
@@ -97,6 +97,7 @@ RcppExport SEXP py_exec_code(std::string py_code, std::string start = "single") 
 
 }
 
+/*
 // [[Rcpp::export]]
 RcppExport SEXP py_get_type(std::string var_name) {
   PyObject *module     = PyImport_AddModule("__main__");
@@ -108,10 +109,10 @@ RcppExport SEXP py_get_type(std::string var_name) {
   }
   return wrap(Py_TYPE(result)->tp_name);
 }
+*/
 
-
-// [[Rcpp::export]]
-RcppExport SEXP py_get_var(std::string var_name) {
+// [[Rcpp::export(name = python.get)]]
+RcppExport SEXP py_get(std::string var_name) {
   PyObject *module     = PyImport_AddModule("__main__");
   PyObject *dictionary = PyModule_GetDict(module);
   PyObject *result     = PyDict_GetItemString(dictionary, var_name.c_str());

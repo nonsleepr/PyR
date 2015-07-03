@@ -25,37 +25,26 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// py_exec_code
-RcppExport SEXP py_exec_code(std::string py_code, std::string start);
-RcppExport SEXP PyR_py_exec_code(SEXP py_codeSEXP, SEXP startSEXP) {
+// py_exec
+RcppExport SEXP py_exec(std::string py_code, std::string start);
+RcppExport SEXP PyR_py_exec(SEXP py_codeSEXP, SEXP startSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< std::string >::type py_code(py_codeSEXP);
     Rcpp::traits::input_parameter< std::string >::type start(startSEXP);
-    __result = Rcpp::wrap(py_exec_code(py_code, start));
+    __result = Rcpp::wrap(py_exec(py_code, start));
     return __result;
 END_RCPP
 }
-// py_get_type
-RcppExport SEXP py_get_type(std::string var_name);
-RcppExport SEXP PyR_py_get_type(SEXP var_nameSEXP) {
+// py_get
+RcppExport SEXP py_get(std::string var_name);
+RcppExport SEXP PyR_py_get(SEXP var_nameSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< std::string >::type var_name(var_nameSEXP);
-    __result = Rcpp::wrap(py_get_type(var_name));
-    return __result;
-END_RCPP
-}
-// py_get_var
-RcppExport SEXP py_get_var(std::string var_name);
-RcppExport SEXP PyR_py_get_var(SEXP var_nameSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< std::string >::type var_name(var_nameSEXP);
-    __result = Rcpp::wrap(py_get_var(var_name));
+    __result = Rcpp::wrap(py_get(var_name));
     return __result;
 END_RCPP
 }
