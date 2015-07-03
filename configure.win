@@ -1,0 +1,8 @@
+#!/bin/sh
+
+PYTHON_PATH=`python -c "from __future__ import print_function; import sys; import os; print(os.path.dirname(sys.executable))"`
+PYTHON_LIB=`python -V 2>&1 | sed -e "s/Python \([0-9]\)\.\([0-9]\).*/python\1\2/g"`
+
+echo "PKG_LIBS=-L\"${PYTHON_PATH}\\libs\" -l${PYTHON_LIB}"    > src/makevars.win
+echo "PKG_CXXFLAGS=-I\"${PYTHON_PATH}\\include\" -DMS_WIN64" >> src/makevars.win
+
