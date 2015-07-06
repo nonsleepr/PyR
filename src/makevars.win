@@ -1,2 +1,0 @@
-PKG_LIBS=-L"C:\Continuum\Anaconda\libs" -lpython27
-PKG_CXXFLAGS=-I"C:\Continuum\Anaconda\include" -DMS_WIN64
