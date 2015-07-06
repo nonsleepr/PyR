@@ -116,6 +116,7 @@ RcppExport SEXP py_get_type(std::string var_name) {
 //' @return Value of the variable.
 //' @examples
 //' python.get('a')
+//' @export
 // [[Rcpp::export(name = python.get)]]
 RcppExport SEXP py_get(std::string var_name) {
   PyObject *module     = PyImport_AddModule("__main__");
