@@ -24,8 +24,7 @@
 #' @return Value of the variable.
 #' @examples
 #' python.get('a')
-#' @export
-python.get <- function(var_name) {
-    .Call('PyR_py_get', PACKAGE = 'PyR', var_name)
+.python.get <- function(module_name, var_name) {
+    .Call('PyR_py_get', PACKAGE = 'PyR', module_name, var_name)
 }
 

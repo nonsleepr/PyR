@@ -37,13 +37,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // py_get
-RcppExport SEXP py_get(std::string var_name);
-RcppExport SEXP PyR_py_get(SEXP var_nameSEXP) {
+RcppExport SEXP py_get(std::string module_name, std::string var_name);
+RcppExport SEXP PyR_py_get(SEXP module_nameSEXP, SEXP var_nameSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< std::string >::type module_name(module_nameSEXP);
     Rcpp::traits::input_parameter< std::string >::type var_name(var_nameSEXP);
-    __result = Rcpp::wrap(py_get(var_name));
+    __result = Rcpp::wrap(py_get(module_name, var_name));
     return __result;
 END_RCPP
 }
