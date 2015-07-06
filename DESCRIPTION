@@ -13,9 +13,10 @@ URL: https://github.com/nonsleepr/PyR
 BugReports: https://github.com/nonsleepr/PyR/issues
 License: MIT + file LICENSE
 LazyData: TRUE
-Imports:
+Imports: 
     Rcpp (>= 0.11.6),
     jsonlite (>= 0.9.16)
 SystemRequirements: Python
-LinkingTo:
+LinkingTo: 
     Rcpp
+Suggests: testthat
