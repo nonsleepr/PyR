@@ -19,7 +19,8 @@ PyObject* PyStream_write(PyObject* self, PyObject* args) {
       return 0;
 
     std::string str(data);
-    *(selfimpl->stream) << str << std::endl;
+    // TODO: Make log prefix parameterizables
+    *(selfimpl->stream) << std::string("PyR: ") << str << std::endl;
     written = str.size();
   }
   return PyLong_FromSize_t(written);
