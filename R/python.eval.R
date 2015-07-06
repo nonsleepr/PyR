@@ -6,5 +6,9 @@
 #' python.eval("1+1")
 #' @export
 python.eval <- function(code) {
-  .python.exec(code, "eval")
+  code <- sprintf("json.dumps(%s)", code)
+  ret <- .python.exec(code, "eval")
+  if(length(ret) && ret != "") {
+    jsonlite::fromJSON(ret)
+  }
 }

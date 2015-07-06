@@ -7,7 +7,7 @@ test_that("python.call works with different arguments", {
   expect_equal(python.call("foo", c(100, 200)), c(100, 200))
   python.exec("def foo(bar, baz):\n    return (bar, baz)")
   expect_equal(python.call("foo", 100, 200), c(100, 200))
-  expect_equal(python.call("foo", baz = 100, bar = 200), c(100, 200))
+  expect_equal(python.call("foo", bar = 100, baz = 200), c(100, 200))
 })
 
 test_that("python.eval returns results", {

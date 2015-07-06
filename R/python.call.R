@@ -8,8 +8,9 @@
 #' @export
 python.call <- function(func, ...) {
   args <- jsonlite::toJSON(list(...))
-  code <- sprintf("json.dumps(%s(*pyr.str_to_args('%s'), **pyr.str_to_kwargs('%s')))", func, args, args)
-  ret <- .python.exec(code)
+  code <- sprintf("pyr._ = json.dumps(%s(*pyr.str_to_args('%s'), **pyr.str_to_kwargs('%s')))", func, args, args)
+  .python.exec(code)
+  ret <- python.get("pyr._")
   if(length(ret) && ret != "") {
     jsonlite::fromJSON(ret)
   }
