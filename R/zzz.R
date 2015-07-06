@@ -8,4 +8,5 @@
 
 .onUnload <- function( libpath ){
   .python.close()
+  library.dynam.unload("PyR", libpath)
 }
