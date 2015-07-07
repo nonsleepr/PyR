@@ -1,3 +1,5 @@
+[![Travis-CI Build Status](https://travis-ci.org/nonsleepr/PyR.svg?branch=master)](https://travis-ci.org/nonsleepr/PyR)
+
 # PyR: Set of Functions to Allow Use of Python in R
 
 A bridge between R and Python. Thes package is inspired by
