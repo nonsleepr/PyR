@@ -1,6 +1,8 @@
 import json
 import collections
 import pyr
+
+# Python 2.6 doesn't have OrderedDict but it is crucial in current implementation
 def _pyr_str_to_args(json_string):
     obj = json.JSONDecoder(object_pairs_hook=collections.OrderedDict).decode(json_string)
     if isinstance(obj, dict):
