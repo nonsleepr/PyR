@@ -1,7 +1,7 @@
 Package: PyR
 Type: Package
 Title: Set of Functions to Allow Use of Python in R
-Version: 0.2.0
+Version: 0.3.0
 Date: 2015-07-01
 Authors@R: person("Alexander", "Bessonov", email = "nonsleepr@gmail.com",
     role = c("aut", "cre"))
