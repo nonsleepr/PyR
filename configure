@@ -1,0 +1,12 @@
+#! /usr/bin/env sh
+
+PYTHON_INC=`python -c "from __future__ import print_function; from distutils import sysconfig; print(sysconfig.get_python_inc())"`
+PYTHON_VER=`python -c "from __future__ import print_function; from distutils import sysconfig; print(sysconfig.get_python_version())"`
+PYTHON_LIB=`python -c "from __future__ import print_function; from distutils import sysconfig; print(sysconfig.os.path.dirname(sysconfig.get_python_lib(plat_specific=1, standard_lib=1)))"`
+
+# DFLAGS=-DPYTHONLIBFILE=\\\"`gcc -print-file-name=libpython${PYTHON_VER}.so`\\\"
+
+echo "PKG_LIBS=-L${PYTHON_LIB} -lpython${PYTHON_VER}"  > src/Makevars
+# echo "PKG_CPPFLAGS=${DFLAGS}"                         >> src/Makevars
+echo "PKG_CXXFLAGS=-I${PYTHON_INC}"                   >> src/Makevars
+echo "C=clang"                                        >> src/Makevars

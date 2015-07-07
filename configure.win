@@ -9,6 +9,6 @@ else
     DFLAGS="-DMS_WIN32"
 fi
 
-echo "PKG_LIBS=-L\"${PYTHON_PATH}\\libs\" -l${PYTHON_LIB}"   > src/makevars.win
-echo "PKG_CXXFLAGS=-I\"${PYTHON_PATH}\\include\" ${DFLAGS}" >> src/makevars.win
-echo "C=clang"                                              >> src/makevars.win
+echo "PKG_LIBS=-L\"${PYTHON_PATH}\\libs\" -l${PYTHON_LIB}"   > src/Makevars.win
+echo "PKG_CXXFLAGS=-I\"${PYTHON_PATH}\\include\" ${DFLAGS}" >> src/Makevars.win
+echo "C=clang"                                              >> src/Makevars.win
