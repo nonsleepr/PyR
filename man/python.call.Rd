@@ -4,7 +4,7 @@
 \alias{python.call}
 \title{Call python function with parameters.}
 \usage{
-python.call(func, ...)
+python.call(func, ..., .saveTo = "pyr._", .getResults = TRUE)
 }
 \arguments{
 \item{func}{Function name string.}
