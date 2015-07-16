@@ -9,3 +9,9 @@ test_that("python.get_function returns function that works", {
   expect_equal(test_fn(a = 10), 40)
   expect_equal(test_fn(b = 10), 30)
 })
+
+test_that("python.get_class returns working Python class", {
+  expect_is(PyStr <- python.get_class("str"), "refObjectGenerator")
+  s <- PyStr("hello, {name}")
+  expect_equal(s$format(name = "world"), "hello, world")
+})

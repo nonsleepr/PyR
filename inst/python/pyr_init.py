@@ -35,3 +35,5 @@ def _pyr_str_to_obj(json_string):
 pyr.str_to_args = _pyr_str_to_args
 pyr.str_to_kwargs = _pyr_str_to_kwargs
 pyr.str_to_obj = _pyr_str_to_obj
+
+pyr.instances = []
