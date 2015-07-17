@@ -1,6 +1,8 @@
 #' Call python function with parameters.
 #'
 #' @param func Function name string.
+#' @param .saveTo Name of the Python variable to save results of the call.
+#' @param .getResults Wether to return results of the execution.
 #' @param ... Optional function parameters, could be names as well.
 #' @return Value returned by called function.
 #' @examples

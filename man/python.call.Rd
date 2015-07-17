@@ -10,6 +10,10 @@ python.call(func, ..., .saveTo = "pyr._", .getResults = TRUE)
 \item{func}{Function name string.}
 
 \item{...}{Optional function parameters, could be names as well.}
+
+\item{.saveTo}{Name of the Python variable to save results of the call.}
+
+\item{.getResults}{Wether to return results of the execution.}
 }
 \value{
 Value returned by called function.

@@ -10,6 +10,7 @@
 #' @export
 python.get_class <- function(cls_name, env = parent.frame()) {
   r_cls_name <- paste0("PyR_", cls_name)
+  .inst_index <- NULL # To make "R CMD check" happy
   tryCatch({
     cls <- getRefClass(r_cls_name, where = env)
     cls
@@ -26,7 +27,7 @@ python.get_class <- function(cls_name, env = parent.frame()) {
       .inst_index <<- python.eval("len(pyr.instances) - 1")
       python.call(cls_name, .saveTo = sprintf("pyr.instances[%d]", .inst_index), .getResults = FALSE, ...)
     }, list(cls_name = cls_name)))
-    methods$finalize = function() {
+    methods$finalize <- function() {
       python.exec(sprintf("pyr.instances[%d] = None", .inst_index))
     }
     cls <- setRefClass(r_cls_name, fields = list(.inst_index = "integer"),

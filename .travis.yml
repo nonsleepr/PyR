@@ -9,6 +9,7 @@ apt_packages:
 r_binary_packages:
  - Rcpp
  - jsonlite
+ - testthat
 
 env:
  global:
