@@ -1,5 +1,7 @@
 #include <Rcpp.h>
 
+#undef HAVE_HYPOT // To suppress compilation warning: "HAVE_HYPOT" redefined [enabled by default]
+
 #include <Python.h>
 #include <bytesobject.h>
 
