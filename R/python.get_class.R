@@ -19,16 +19,16 @@ python.get_class <- function(cls_name, env = parent.frame()) {
     method_names <- python.eval(code)
     methods <- lapply(setNames(method_names, method_names), function(m) {
       eval(substitute(function(...) {
-        python.call(sprintf("pyr.instances[%d].%s", .inst_index, m), ...)
+        PyR::python.call(sprintf("pyr.instances[%d].%s", .inst_index, m), ...)
       }, list(m = m)))
     })
     methods$initialize <- eval(substitute(function(...) {
-      python.exec("pyr.instances.append(None)")
-      .inst_index <<- python.eval("len(pyr.instances) - 1")
-      python.call(cls_name, .saveTo = sprintf("pyr.instances[%d]", .inst_index), .getResults = FALSE, ...)
+      PyR::python.exec("pyr.instances.append(None)")
+      .inst_index <<- PyR::python.eval("len(pyr.instances) - 1")
+      PyR::python.call(cls_name, .saveTo = sprintf("pyr.instances[%d]", .inst_index), .getResults = FALSE, ...)
     }, list(cls_name = cls_name)))
     methods$finalize <- function() {
-      python.exec(sprintf("pyr.instances[%d] = None", .inst_index))
+      PyR::python.exec(sprintf("pyr.instances[%d] = None", .inst_index))
     }
     cls <- setRefClass(r_cls_name, fields = list(.inst_index = "integer"),
                 methods = methods,
