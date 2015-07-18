@@ -9,11 +9,13 @@ apt_packages:
 r_binary_packages:
  - Rcpp
  - jsonlite
- - testthat
 
 env:
  global:
-   - CRAN: http://cran.rstudio.com
+  - CRAN=http://cran.rstudio.com
+  - NOT_CRAN=true
+
+before_install: echo "options(repos = c(CRAN='http://cran.rstudio.com'))" > ~/.Rprofile
 
 notifications:
   email:
