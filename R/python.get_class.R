@@ -12,27 +12,25 @@ python.get_class <- function(cls_name, env = parent.frame()) {
   r_cls_name <- paste0("PyR_", cls_name)
   .inst_index <- NULL # To make "R CMD check" happy
   tryCatch({
-    cls <- getRefClass(r_cls_name, where = env)
-    cls
+    getRefClass(r_cls_name, where = env)
   }, error = function (e) {
     code <- sprintf("[k for k in dir(%s) if not k.startswith('_') and callable(getattr(%s, k))]", cls_name, cls_name)
     method_names <- python.eval(code)
     methods <- lapply(setNames(method_names, method_names), function(m) {
-      eval(substitute(function(...) {
-        PyR::python.call(sprintf("pyr.instances[%d].%s", .inst_index, m), ...)
-      }, list(m = m)))
+      eval(bquote(function(...) {
+        PyR::python.call(sprintf(.(paste0("pyr.instances[%d].",m)), .inst_index), ...)
+      }))
     })
-    methods$initialize <- eval(substitute(function(...) {
+    methods$initialize <- eval(bquote(function(...) {
       PyR::python.exec("pyr.instances.append(None)")
       .inst_index <<- PyR::python.eval("len(pyr.instances) - 1")
-      PyR::python.call(cls_name, .saveTo = sprintf("pyr.instances[%d]", .inst_index), .getResults = FALSE, ...)
-    }, list(cls_name = cls_name)))
+      PyR::python.call(.(cls_name), .saveTo = sprintf("pyr.instances[%d]", .inst_index), .getResults = FALSE, ...)
+    }))
     methods$finalize <- function() {
       PyR::python.exec(sprintf("pyr.instances[%d] = None", .inst_index))
     }
-    cls <- setRefClass(r_cls_name, fields = list(.inst_index = "integer"),
+    setRefClass(r_cls_name, fields = list(.inst_index = "integer"),
                 methods = methods,
                 where = env)
-    cls
   })
 }
