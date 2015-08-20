@@ -10,7 +10,7 @@
 #' @export
 python.call <- function(func, ..., .saveTo = "pyr._", .getResults = TRUE) {
   args <- list(...)
-  args <- jsonlite::toJSON(args)
+  args <- jsonlite::toJSON(args, null="null", na="null")
   code <- sprintf("%s = %s(*pyr.str_to_args('%s'), **pyr.str_to_kwargs('%s'))", .saveTo, func, args, args)
   .python.exec(code)
   if (.getResults) {
